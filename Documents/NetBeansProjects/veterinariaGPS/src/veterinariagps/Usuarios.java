@@ -7,6 +7,7 @@ package veterinariagps;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,8 +21,10 @@ public class Usuarios extends javax.swing.JFrame {
      */
     public Usuarios() {
         initComponents();
+        btnUpdate.setVisible(false);
     }
 manejadorBD manejador =  new manejadorBD();
+boolean banderaEditar = true;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -48,6 +51,7 @@ manejadorBD manejador =  new manejadorBD();
         fieldSueldo = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        btnUpdate = new javax.swing.JToggleButton();
 
         btnMostrar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnMostrar.setText("Mostrar");
@@ -68,6 +72,11 @@ manejadorBD manejador =  new manejadorBD();
 
         Eliminar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         Eliminar.setText("Eliminar");
+        Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -75,6 +84,11 @@ manejadorBD manejador =  new manejadorBD();
 
         Modificar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         Modificar.setText("Modificar");
+        Modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -89,6 +103,11 @@ manejadorBD manejador =  new manejadorBD();
         });
 
         Limpiar.setText("Limpiar");
+        Limpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LimpiarActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -105,6 +124,8 @@ manejadorBD manejador =  new manejadorBD();
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane2.setViewportView(jTextArea1);
+
+        btnUpdate.setText("Modificar Campo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -136,7 +157,9 @@ manejadorBD manejador =  new manejadorBD();
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(31, 31, 31)
-                                        .addComponent(fieldSueldo, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(btnUpdate)
+                                            .addComponent(fieldSueldo, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -194,7 +217,9 @@ manejadorBD manejador =  new manejadorBD();
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(BotonSalir)
                             .addComponent(btnMostrar))))
-                .addGap(57, 57, 57)
+                .addGap(16, 16, 16)
+                .addComponent(btnUpdate)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(40, Short.MAX_VALUE))
         );
@@ -235,6 +260,28 @@ manejadorBD manejador =  new manejadorBD();
         }
         //tableEmpleados.
     }//GEN-LAST:event_btnMostrarActionPerformed
+
+    private void LimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LimpiarActionPerformed
+        jTextArea1.setText("");
+    }//GEN-LAST:event_LimpiarActionPerformed
+
+    private void ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarActionPerformed
+        //Modificar
+        String id = JOptionPane.showInputDialog(null,"Inserta el ID");
+        String [] registros = manejador.consultarUsuario(id);
+        fieldId.setText(registros[0]);
+        fieldId.disable();
+        fieldPuesto.setText(registros[1]);
+        fieldNombre.setText(registros[2]);
+        btnUpdate.setVisible(true);
+    }//GEN-LAST:event_ModificarActionPerformed
+
+    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
+        // 
+        String idCad = JOptionPane.showInputDialog("Insera id a eliminar");
+        int id = Integer.parseInt(idCad);
+        manejador.eliminarUsuario(id);
+    }//GEN-LAST:event_EliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -278,6 +325,7 @@ manejadorBD manejador =  new manejadorBD();
     private javax.swing.JButton Modificar;
     private javax.swing.JButton btnInsertar;
     private javax.swing.JButton btnMostrar;
+    private javax.swing.JToggleButton btnUpdate;
     private javax.swing.JTextField fieldId;
     private javax.swing.JTextField fieldNombre;
     private javax.swing.JTextField fieldPuesto;

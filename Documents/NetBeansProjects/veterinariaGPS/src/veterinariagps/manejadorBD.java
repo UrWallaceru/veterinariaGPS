@@ -88,7 +88,7 @@ public class manejadorBD {
                     int id = rs.getInt("idEmpleado");
                     String puesto = rs.getString("Empleadocol");
                     String nombre = rs.getString("Nombre");
-                    resultados.add(id+","+puesto+","+nombre);
+                    resultados.add("id: "+id+"Puesto: "+puesto+"Nombre: "+nombre);
                     
                 }
                 //System.out.println(resultados);
@@ -96,6 +96,40 @@ public class manejadorBD {
             Logger.getLogger(manejadorBD.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resultados;
+    }
+    
+    public void eliminarUsuario(int id){
+        String qry = "DELETE FROM empleado WHERE idEmpleado = '"+id+"';";
+        System.out.println(qry);
+        try {
+            sentencia.executeUpdate(qry);
+        } catch (SQLException ex) {
+            Logger.getLogger(manejadorBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public String [] consultarUsuario(String id){
+        String [] registros = new String [3];
+        try {
+            String query = "SELECT * FROM empleado;";
+            ResultSet rs = sentencia.executeQuery(query);
+            
+            while (rs.next()) {
+                registros[0] = rs.getString("idEmpleado");
+                if (id == registros[0]) {
+                    registros[1] = rs.getString("Empleadocol");
+                    registros[2] = rs.getString("Nombre");
+                    break;
+                }
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(manejadorBD.class.getName()).log(Level.SEVERE, null, ex);
+        }//Modificar nos falta
+        /*for (int i = 0; i < registros.length; i++) {
+            System.out.println(registros[i]);
+        }*/
+        return registros;
     }
     
     
