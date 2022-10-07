@@ -58,7 +58,7 @@ public class manejadorBD {
             if (nombre.equals(nom)) {
                 if (contraseña.equals(pass)) {
                     JOptionPane.showMessageDialog(null,"Ingresaste");
-                    new Usuarios().setVisible(true);
+                    new MenuP().setVisible(true);
                     break;
                 }else JOptionPane.showMessageDialog(null,"Contraseña Incorrecta");
             }
@@ -132,5 +132,42 @@ public class manejadorBD {
         return registros;
     }
     
+    //---------------------------------Productos
+    public int crearProducto(int id, String producto, String descripcion)throws Exception{ 
+        String qry = "INSERT INTO producto (idProducto,Nombre,Descripcion ) VALUES ('"+id+"','"+producto+"','"+descripcion+"');";
+        System.out.println(qry);
+        return sentencia.executeUpdate(qry);
+    }
+    
+    public ArrayList<String> mostrarProductos(){
+        ArrayList<String> resultados = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM producto;";
+            ResultSet rs = sentencia.executeQuery(query);
+            
+                while (rs.next()) {
+                    //valores de empleados
+                    int id = rs.getInt("idProducto");
+                    String Nombre = rs.getString("Nombre");
+                    String Descripcion = rs.getString("Descripcion");
+                    resultados.add("id: "+id+"Nombre: "+Nombre+"Descripcion: "+Descripcion);
+                    
+                }
+                //System.out.println(resultados);
+        } catch (SQLException ex) {
+            Logger.getLogger(manejadorBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultados;
+    }
+    
+    public void eliminarProducto(int id){
+        String qry = "DELETE FROM producto WHERE idProducto = '"+id+"';";
+        System.out.println(qry);
+        try {
+            sentencia.executeUpdate(qry);
+        } catch (SQLException ex) {
+            Logger.getLogger(manejadorBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
 }
