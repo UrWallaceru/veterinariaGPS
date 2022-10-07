@@ -17,7 +17,7 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     public Login() {
-        this.setLocationRelativeTo(null);
+        //this.setLocationRelativeTo(null);
         initComponents();
     }
 
@@ -106,20 +106,19 @@ public class Login extends javax.swing.JFrame {
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
         manejadorBD manejador = new manejadorBD();
-        Boolean verificar=true;
+        //Boolean verificar=true;
         try {
             
             String nom = fieldNombre.getText();
             String pass = fieldPass.getText();
+            
             //Imprimir usuario y contraseña
-            System.out.println(nom+pass);
-            manejador.verificarUsuario(nom,pass,verificar);
-            //Statement statement = sentencia.createStatement;
+            //System.out.println(nom+pass);
+            manejador.verificarUsuario(nom,pass);
+            this.dispose();
         } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (verificar == false) 
-            this.hide();
         
     }//GEN-LAST:event_btnIniciarActionPerformed
 

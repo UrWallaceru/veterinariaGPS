@@ -7,7 +7,11 @@ package veterinariagps;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
@@ -40,25 +44,59 @@ public class manejadorBD {
         if (sentencia != null) sentencia.close();
         if (conexion != null) conexion.close();   
     }
+    //_---------------------------Login-----------------------------------------
     
-    public boolean verificarUsuario(String nom,String pass, Boolean verificar)throws Exception{
-        String query = "SELECT * FROM empleado;";
+    public void verificarUsuario(String nom,String pass)throws Exception{
+        String query = "SELECT * FROM usuarios;";
         ResultSet rs = sentencia.executeQuery(query);
         String nombre="" , contraseña="";
+        
         while (rs.next()) {
-            //
-            nombre = rs.getString("nombre");
-            contraseña = rs.getString("contraseña");
+            nombre = rs.getString("NombreClave");
+            contraseña = rs.getString("password"); 
+            //System.out.println(contraseña+nombre);
             if (nombre.equals(nom)) {
                 if (contraseña.equals(pass)) {
-                    //System.out.println("Ingresaste!!!!");
-                    JOptionPane.showMessageDialog(null,"Ingresaste MI PENDEJO");
-                    verificar = false;
+                    JOptionPane.showMessageDialog(null,"Ingresaste");
                     new Usuarios().setVisible(true);
                     break;
                 }else JOptionPane.showMessageDialog(null,"Contraseña Incorrecta");
             }
         }
-        return verificar;
+        
     }
+    //--------------------------------CRUD EMPLEADO-----------------------------
+    /*public void crearEmpleado(int id, String nombre, int sueldo, String puesto){
+        String qry = "INSERT INTO delincuente (ndelincuente,alias, sexo, lorigen, estarura, peso) VALUES ('"+id+"','"+alias+"','"+sexo+"','"+origen+"','"+altura+"','"+peso+"')";
+        System.out.println(qry);
+    }*/
+    
+    public int crearEmpleado(int id, String nombre, String puesto)throws Exception{ 
+        String qry = "INSERT INTO empleado (idEmpleado,Empleadocol,Nombre ) VALUES ('"+id+"','"+puesto+"','"+nombre+"');";
+        System.out.println(qry);
+        return sentencia.executeUpdate(qry);
+    }
+    
+    public ArrayList<String> mostrarEmpleados(){
+        ArrayList<String> resultados = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM empleado;";
+            ResultSet rs = sentencia.executeQuery(query);
+            
+                while (rs.next()) {
+                    //valores de empleados
+                    int id = rs.getInt("idEmpleado");
+                    String puesto = rs.getString("Empleadocol");
+                    String nombre = rs.getString("Nombre");
+                    resultados.add(id+","+puesto+","+nombre);
+                    
+                }
+                //System.out.println(resultados);
+        } catch (SQLException ex) {
+            Logger.getLogger(manejadorBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultados;
+    }
+    
+    
 }
